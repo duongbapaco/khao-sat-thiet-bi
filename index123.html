@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ thống Khảo sát & Thống kê Trang thiết bị Công nghệ</title>
     <style>
-        *, *::before, *::after { box-sizing: border-box; }
+        *, *::before, *::after { box-shadow: none; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f6f9;
@@ -88,8 +88,6 @@
         .btn-submit:hover {
             background-color: #004085;
         }
-        
-        /* Table Preview Styles */
         .preview-section {
             margin-top: 40px;
             border-top: 2px dashed #ccc;
@@ -242,7 +240,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    </tbody>
+                </tbody>
             </table>
         </div>
         
@@ -276,7 +274,6 @@
         dataList.push(record);
         renderTable();
         
-        // Reset form giữ nguyên bộ phận để tiện nhập tiếp cho người khác cùng phòng
         const currentDept = document.getElementById('department').value;
         form.reset();
         document.getElementById('department').value = currentDept;
@@ -362,15 +359,12 @@
             </td>
         </tr>
     </table>
-
     <div class="title-section">
         <h2>BÁO CÁO</h2>
         <h2>Tổng hợp tình hình trang thiết bị công nghệ thông tin</h2>
         <p>(Kèm theo Công văn số: ....../.........)</p>
     </div>
-
     <p style="text-align: justify; text-indent: 1.27cm; margin-bottom: 15px;">Thực hiện kế hoạch rà soát và kiểm kê tài sản công nghệ thông tin định kỳ nhằm đảm bảo hạ tầng kỹ thuật vận hành ổn định, đơn vị xin báo cáo tổng hợp dữ liệu khảo sát trang thiết bị công nghệ chi tiết như sau:</p>
-
     <table style="width: 100%; border-collapse: collapse; font-size: 10.5pt; margin-top: 15px;">
         <thead>
             <tr style="background-color: #f2f2f2;">
@@ -390,9 +384,7 @@
             ${tableRowsHtml}
         </tbody>
     </table>
-
     <p style="text-align: justify; text-indent: 1.27cm; margin-top: 20px;">Kính trình lãnh đạo xem xét và phê duyệt phương án điều chỉnh, nâng cấp đối với các thiết bị có kiến nghị từ bộ phận sử dụng để đảm bảo hiệu suất công việc chung.</p>
-
     <table class="signature-table">
         <tr>
             <td>
