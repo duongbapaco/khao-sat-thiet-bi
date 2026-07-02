@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ thống Khảo sát & Thống kê Trang thiết bị Công nghệ</title>
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <style>
         *, *::before, *::after { box-shadow: none; box-sizing: border-box; }
         body {
@@ -212,8 +217,8 @@
                 <div class="form-group">
                     <label for="osLicense">Bản quyền HĐH</label>
                     <select id="osLicense">
+                        <option value="Chưa có bản quyền" selected>Chưa có bản quyền</option>
                         <option value="Có bản quyền">Có bản quyền</option>
-                        <option value="Chưa có bản quyền">Chưa có bản quyền</option>
                     </select>
                 </div>
             </div>
@@ -240,8 +245,8 @@
                 <div class="form-group">
                     <label for="officeLicense">Bản quyền Office</label>
                     <select id="officeLicense">
+                        <option value="Chưa có bản quyền" selected>Chưa có bản quyền</option>
                         <option value="Có bản quyền">Có bản quyền</option>
-                        <option value="Chưa có bản quyền">Chưa có bản quyền</option>
                     </select>
                 </div>
             </div>
@@ -270,8 +275,8 @@
                 <div class="form-group">
                     <label for="otherLicense">Bản quyền PM khác</label>
                     <select id="otherLicense">
+                        <option value="Chưa có bản quyền" selected>Chưa có bản quyền</option>
                         <option value="Có bản quyền">Có bản quyền</option>
-                        <option value="Chưa có bản quyền">Chưa có bản quyền</option>
                     </select>
                 </div>
             </div>
@@ -347,9 +352,9 @@
         document.getElementById('quantity').value = 1;
         document.getElementById('os').value = "";
         document.getElementById('office').value = "";
-        document.getElementById('osLicense').value = "Có bản quyền";
-        document.getElementById('officeLicense').value = "Có bản quyền";
-        document.getElementById('otherLicense').value = "Có bản quyền";
+        document.getElementById('osLicense').value = "Chưa có bản quyền";
+        document.getElementById('officeLicense').value = "Chưa có bản quyền";
+        document.getElementById('otherLicense').value = "Chưa có bản quyền";
     });
 
     function renderTable() {
