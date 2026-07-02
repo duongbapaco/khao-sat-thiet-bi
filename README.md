@@ -1,0 +1,1 @@
+# khao-sat-thiet-bi
