@@ -191,12 +191,21 @@
             <textarea id="config" required></textarea>
         </div>
 
-        <!-- Khu vực Hệ điều hành -->
         <div class="row">
             <div class="col-3">
                 <div class="form-group">
                     <label for="os">Hệ điều hành</label>
-                    <input type="text" id="os">
+                    <select id="os">
+                        <option value="">-- Không sử dụng / Thiết bị khác --</option>
+                        <option value="Windows 10 Pro">Windows 10 Pro</option>
+                        <option value="Windows 10 Home">Windows 10 Home</option>
+                        <option value="Windows 11 Pro">Windows 11 Pro</option>
+                        <option value="Windows 11 Home">Windows 11 Home</option>
+                        <option value="Windows 7">Windows 7 (Cũ)</option>
+                        <option value="Windows Server">Windows Server (Dành cho máy chủ)</option>
+                        <option value="macOS">macOS (Máy tính Apple)</option>
+                        <option value="Linux / Ubuntu">Linux / Ubuntu</option>
+                    </select>
                 </div>
             </div>
             <div class="col-1">
@@ -210,12 +219,21 @@
             </div>
         </div>
 
-        <!-- Khu vực Phần mềm Office -->
         <div class="row">
             <div class="col-3">
                 <div class="form-group">
                     <label for="office">Phần mềm Office</label>
-                    <input type="text" id="office">
+                    <select id="office">
+                        <option value="">-- Không cài đặt --</option>
+                        <option value="Microsoft Office 2021">Microsoft Office 2021</option>
+                        <option value="Microsoft Office 2019">Microsoft Office 2019</option>
+                        <option value="Microsoft Office 2016">Microsoft Office 2016</option>
+                        <option value="Microsoft Office 2013">Microsoft Office 2013</option>
+                        <option value="Microsoft Office 2010">Microsoft Office 2010 (Cũ)</option>
+                        <option value="Microsoft Office 365">Microsoft Office 365 (Bản quyền theo năm)</option>
+                        <option value="WPS Office">WPS Office (Bản miễn phí/thay thế)</option>
+                        <option value="Office cho Mac">Office dành cho macOS</option>
+                    </select>
                 </div>
             </div>
             <div class="col-1">
@@ -229,7 +247,6 @@
             </div>
         </div>
 
-        <!-- Khu vực Phần mềm khác (Có gợi ý tự động) -->
         <div class="row">
             <div class="col-3">
                 <div class="form-group">
@@ -328,6 +345,8 @@
         form.reset();
         document.getElementById('department').value = currentDept;
         document.getElementById('quantity').value = 1;
+        document.getElementById('os').value = "";
+        document.getElementById('office').value = "";
         document.getElementById('osLicense').value = "Có bản quyền";
         document.getElementById('officeLicense').value = "Có bản quyền";
         document.getElementById('otherLicense').value = "Có bản quyền";
