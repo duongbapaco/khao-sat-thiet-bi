@@ -150,20 +150,13 @@
             <div class="col">
                 <div class="form-group">
                     <label for="department">Bộ phận / Phòng ban <span style="color:red;">*</span></label>
-                    <select id="department" required>
-                        <option value="">-- Chọn Bộ phận --</option>
-                        <option value="Phòng Hành chính - Nhân sự">Phòng Hành chính - Nhân sự</option>
-                        <option value="Phòng Kế toán">Phòng Kế toán</option>
-                        <option value="Phòng Kinh doanh">Phòng Kinh doanh</option>
-                        <option value="Phòng Kỹ thuật / IT">Phòng Kỹ thuật / IT</option>
-                        <option value="Ban Giám đốc">Ban Giám đốc</option>
-                    </select>
+                    <input type="text" id="department" required>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="user">Người sử dụng <span style="color:red;">*</span></label>
-                    <input type="text" id="user" placeholder="Ví dụ: Nguyễn Văn A" required>
+                    <input type="text" id="user" required>
                 </div>
             </div>
         </div>
@@ -172,12 +165,12 @@
             <div class="col">
                 <div class="form-group">
                     <label for="deviceName">Tên thiết bị <span style="color:red;">*</span></label>
-                    <input type="text" id="deviceName" placeholder="Ví dụ: Máy tính để bàn, Laptop Dell, Máy in HP..." required>
+                    <input type="text" id="deviceName" required>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label for="quantity">Số lượng <span style="color:red;">*</span></label>
+                    <label_for="quantity">Số lượng <span style="color:red;">*</span></label>
                     <input type="number" id="quantity" min="1" value="1" required>
                 </div>
             </div>
@@ -185,37 +178,32 @@
 
         <div class="form-group">
             <label for="config">Cấu hình chi tiết <span style="color:red;">*</span></label>
-            <textarea id="config" placeholder="Ví dụ: Core i5-11400, RAM 16GB, SSD 512GB, Màn hình 24 inch (Hoặc ghi rõ thông số máy in/thiết bị khác)" required></textarea>
+            <textarea id="config" required></textarea>
         </div>
 
         <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label for="os">Hệ điều hành</label>
-                    <select id="os">
-                        <option value="Windows 10">Windows 10</option>
-                        <option value="Windows 11">Windows 11</option>
-                        <option value="macOS">macOS</option>
-                        <option value="Không có / Khác">Không có / Khác</option>
-                    </select>
+                    <input type="text" id="os">
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="office">Phần mềm Office</label>
-                    <input type="text" id="office" value="Microsoft Office 2021" placeholder="Ví dụ: Office 2019, Microsoft 365...">
+                    <input type="text" id="office">
                 </div>
             </div>
         </div>
 
         <div class="form-group">
             <label for="otherSoftware">Phần mềm khác</label>
-            <input type="text" id="otherSoftware" placeholder="Ví dụ: Photoshop, AutoCAD, MISA, phần mềm chuyên ngành...">
+            <input type="text" id="otherSoftware">
         </div>
 
         <div class="form-group">
             <label for="proposal">Đề xuất / Kiến nghị (nếu có)</label>
-            <textarea id="proposal" placeholder="Ví dụ: Máy chậm cần nâng cấp thêm RAM, Đề xuất đổi máy mới do hỏng màn hình..."></textarea>
+            <textarea id="proposal"></textarea>
         </div>
 
         <button type="submit" class="btn-submit">Thêm vào danh sách thống kê</button>
@@ -264,7 +252,7 @@
             dept: document.getElementById('department').value,
             device: document.getElementById('deviceName').value,
             config: document.getElementById('config').value,
-            os: document.getElementById('os').value,
+            os: document.getElementById('os').value || '-',
             office: document.getElementById('office').value || '-',
             other: document.getElementById('otherSoftware').value || '-',
             qty: document.getElementById('quantity').value,
@@ -274,6 +262,7 @@
         dataList.push(record);
         renderTable();
         
+        // Giữ lại tên bộ phận vừa nhập để người dùng không phải gõ lại nhiều lần cho các máy tiếp theo cùng phòng
         const currentDept = document.getElementById('department').value;
         form.reset();
         document.getElementById('department').value = currentDept;
