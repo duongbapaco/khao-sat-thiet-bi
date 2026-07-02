@@ -14,7 +14,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             background: #ffffff;
             padding: 30px;
@@ -72,6 +72,8 @@
             flex: 1;
             min-width: 200px;
         }
+        .col-3 { flex: 3; min-width: 180px; }
+        .col-1 { flex: 1; min-width: 140px; }
         .btn-submit {
             background-color: #0056b3;
             color: white;
@@ -135,6 +137,14 @@
         .btn-export:hover {
             background-color: #218838;
         }
+        .status-badge {
+            font-weight: bold;
+            font-size: 11px;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .status-yes { color: #28a745; }
+        .status-no { color: #dc3545; }
     </style>
 </head>
 <body>
@@ -181,23 +191,18 @@
             <textarea id="config" required></textarea>
         </div>
 
+        <!-- Khu vực Hệ điều hành -->
         <div class="row">
-            <div class="col">
+            <div class="col-3">
                 <div class="form-group">
                     <label for="os">Hệ điều hành</label>
                     <input type="text" id="os">
                 </div>
             </div>
-            <div class="col">
+            <div class="col-1">
                 <div class="form-group">
-                    <label for="office">Phần mềm Office</label>
-                    <input type="text" id="office">
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label for="license">Tình trạng bản quyền <span style="color:red;">*</span></label>
-                    <select id="license" required>
+                    <label for="osLicense">Bản quyền HĐH</label>
+                    <select id="osLicense">
                         <option value="Có bản quyền">Có bản quyền</option>
                         <option value="Chưa có bản quyền">Chưa có bản quyền</option>
                     </select>
@@ -205,9 +210,54 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="otherSoftware">Phần mềm khác</label>
-            <input type="text" id="otherSoftware">
+        <!-- Khu vực Phần mềm Office -->
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="office">Phần mềm Office</label>
+                    <input type="text" id="office">
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="form-group">
+                    <label for="officeLicense">Bản quyền Office</label>
+                    <select id="officeLicense">
+                        <option value="Có bản quyền">Có bản quyền</option>
+                        <option value="Chưa có bản quyền">Chưa có bản quyền</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Khu vực Phần mềm khác (Có gợi ý tự động) -->
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="otherSoftware">Phần mềm khác</label>
+                    <input type="text" id="otherSoftware" list="softwareSuggestions">
+                    <datalist id="softwareSuggestions">
+                        <option value="Adobe Photoshop">
+                        <option value="Adobe Illustrator">
+                        <option value="AutoCAD">
+                        <option value="Phần mềm kế toán MISA">
+                        <option value="Phần mềm Kê khai Thuế (HTKK)">
+                        <option value="Phần mềm Bảo hiểm xã hội (IVAN)">
+                        <option value="CorelDraw">
+                        <option value="Phần mềm diệt virus Kaspersky">
+                        <option value="Phần mềm diệt virus BKAV">
+                        <option value="SolidWorks">
+                    </datalist>
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="form-group">
+                    <label for="otherLicense">Bản quyền PM khác</label>
+                    <select id="otherLicense">
+                        <option value="Có bản quyền">Có bản quyền</option>
+                        <option value="Chưa có bản quyền">Chưa có bản quyền</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
@@ -224,16 +274,15 @@
             <table id="dataTable">
                 <thead>
                     <tr>
-                        <th style="width: 4%;">STT</th>
+                        <th style="width: 3%;">STT</th>
                         <th>Người sử dụng</th>
                         <th>Bộ phận</th>
                         <th>Tên thiết bị</th>
-                        <th>Cấu hình</th>
+                        <th style="width: 15%;">Cấu hình</th>
                         <th>Hệ điều hành</th>
-                        <th>Office</th>
-                        <th>Bản quyền</th>
+                        <th>Phần mềm Office</th>
                         <th>Phần mềm khác</th>
-                        <th style="width: 4%;">SL</th>
+                        <th style="width: 3%;">SL</th>
                         <th>Đề xuất / Kiến nghị</th>
                     </tr>
                 </thead>
@@ -263,9 +312,11 @@
             device: document.getElementById('deviceName').value,
             config: document.getElementById('config').value,
             os: document.getElementById('os').value || '-',
+            osLicense: document.getElementById('os').value ? document.getElementById('osLicense').value : '-',
             office: document.getElementById('office').value || '-',
-            license: document.getElementById('license').value,
+            officeLicense: document.getElementById('office').value ? document.getElementById('officeLicense').value : '-',
             other: document.getElementById('otherSoftware').value || '-',
+            otherLicense: document.getElementById('otherSoftware').value ? document.getElementById('otherLicense').value : '-',
             qty: document.getElementById('quantity').value,
             proposal: document.getElementById('proposal').value || 'Không có'
         };
@@ -277,23 +328,29 @@
         form.reset();
         document.getElementById('department').value = currentDept;
         document.getElementById('quantity').value = 1;
-        document.getElementById('license').value = "Có bản quyền";
+        document.getElementById('osLicense').value = "Có bản quyền";
+        document.getElementById('officeLicense').value = "Có bản quyền";
+        document.getElementById('otherLicense').value = "Có bản quyền";
     });
 
     function renderTable() {
         tableBody.innerHTML = '';
         dataList.forEach((item, index) => {
             item.stt = index + 1;
+            
+            const osBadge = item.os !== '-' ? `<br><span class="status-badge ${item.osLicense === 'Có bản quyền' ? 'status-yes' : 'status-no'}">(${item.osLicense})</span>` : '';
+            const officeBadge = item.office !== '-' ? `<br><span class="status-badge ${item.officeLicense === 'Có bản quyền' ? 'status-yes' : 'status-no'}">(${item.officeLicense})</span>` : '';
+            const otherBadge = item.other !== '-' ? `<br><span class="status-badge ${item.otherLicense === 'Có bản quyền' ? 'status-yes' : 'status-no'}">(${item.otherLicense})</span>` : '';
+
             const row = `<tr>
                 <td>${item.stt}</td>
                 <td><b>${item.user}</b></td>
                 <td>${item.dept}</td>
                 <td>${item.device}</td>
                 <td>${item.config}</td>
-                <td>${item.os}</td>
-                <td>${item.office}</td>
-                <td><span style="color: ${item.license === 'Có bản quyền' ? '#28a745' : '#dc3545'}; font-weight: bold;">${item.license}</span></td>
-                <td>${item.other}</td>
+                <td>${item.os} ${osBadge}</td>
+                <td>${item.office} ${officeBadge}</td>
+                <td>${item.other} ${otherBadge}</td>
                 <td>${item.qty}</td>
                 <td>${item.proposal}</td>
             </tr>`;
@@ -309,6 +366,10 @@
 
         let tableRowsHtml = '';
         dataList.forEach(item => {
+            const osText = item.os !== '-' ? `${item.os} <br><span style="font-size:9pt; color:${item.osLicense === 'Có bản quyền' ? '#000' : '#ff0000'};">(${item.osLicense})</span>` : '-';
+            const officeText = item.office !== '-' ? `${item.office} <br><span style="font-size:9pt; color:${item.officeLicense === 'Có bản quyền' ? '#000' : '#ff0000'};">(${item.officeLicense})</span>` : '-';
+            const otherText = item.other !== '-' ? `${item.other} <br><span style="font-size:9pt; color:${item.otherLicense === 'Có bản quyền' ? '#000' : '#ff0000'};">(${item.otherLicense})</span>` : '-';
+
             tableRowsHtml += `
                 <tr style="page-break-inside: avoid;">
                     <td style="border: 1px solid #000; padding: 6px; text-align: center;">${item.stt}</td>
@@ -316,10 +377,9 @@
                     <td style="border: 1px solid #000; padding: 6px;">${item.dept}</td>
                     <td style="border: 1px solid #000; padding: 6px;">${item.device}</td>
                     <td style="border: 1px solid #000; padding: 6px; font-size: 11pt;">${item.config}</td>
-                    <td style="border: 1px solid #000; padding: 6px; text-align: center;">${item.os}</td>
-                    <td style="border: 1px solid #000; padding: 6px; text-align: center;">${item.office}</td>
-                    <td style="border: 1px solid #000; padding: 6px; text-align: center; font-weight: bold; color: ${item.license === 'Có bản quyền' ? '#000' : '#ff0000'};">${item.license}</td>
-                    <td style="border: 1px solid #000; padding: 6px;">${item.other}</td>
+                    <td style="border: 1px solid #000; padding: 6px; text-align: center; font-size: 11pt;">${osText}</td>
+                    <td style="border: 1px solid #000; padding: 6px; text-align: center; font-size: 11pt;">${officeText}</td>
+                    <td style="border: 1px solid #000; padding: 6px; text-align: center; font-size: 11pt;">${otherText}</td>
                     <td style="border: 1px solid #000; padding: 6px; text-align: center;">${item.qty}</td>
                     <td style="border: 1px solid #000; padding: 6px;">${item.proposal}</td>
                 </tr>
@@ -374,10 +434,9 @@
                 <th style="border: 1px solid #000; padding: 6px; text-align: center;">Người sử dụng</th>
                 <th style="border: 1px solid #000; padding: 6px; text-align: center;">Bộ phận</th>
                 <th style="border: 1px solid #000; padding: 6px; text-align: center;">Tên thiết bị</th>
-                <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 20%;">Cấu hình</th>
+                <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 18%;">Cấu hình</th>
                 <th style="border: 1px solid #000; padding: 6px; text-align: center;">Hệ điều hành</th>
-                <th style="border: 1px solid #000; padding: 6px; text-align: center;">Office</th>
-                <th style="border: 1px solid #000; padding: 6px; text-align: center;">Bản quyền</th>
+                <th style="border: 1px solid #000; padding: 6px; text-align: center;">Phần mềm Office</th>
                 <th style="border: 1px solid #000; padding: 6px; text-align: center;">Phần mềm khác</th>
                 <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 4%;">SL</th>
                 <th style="border: 1px solid #000; padding: 6px; text-align: center;">Đề xuất / Kiến nghị</th>
