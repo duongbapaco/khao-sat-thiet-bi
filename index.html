@@ -2,99 +2,609 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Phiếu Khảo Sát Thiết Bị</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-</head>
-<body class="bg-light p-3">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Khảo sát & Thống kê Trang thiết bị Công nghệ</title>
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 
-<div class="card shadow p-4" style="max-width: 1000px; margin: auto;">
-    <h4 class="text-center text-primary mb-4">PHIẾU KHẢO SÁT THIẾT BỊ CNTT (ĐẦY ĐỦ)</h4>
+    <style>
+        *, *::before, *::after { box-shadow: none; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            color: #0056b3;
+            font-size: 24px;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+        .header p {
+            margin: 5px 0;
+            color: #666;
+            font-style: italic;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #444;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 80px;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #0056b3;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,86,179,0.2);
+        }
+        .row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .col {
+            flex: 1;
+            min-width: 200px;
+        }
+        .col-3 { flex: 3; min-width: 180px; }
+        .col-1 { flex: 1; min-width: 140px; }
+        .btn-submit {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .btn-submit:hover {
+            background-color: #004085;
+        }
+        .preview-section {
+            margin-top: 40px;
+            border-top: 2px dashed #ccc;
+            padding-top: 20px;
+        }
+        .preview-title {
+            font-size: 18px;
+            color: #0056b3;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .action-btns {
+            margin-top: 20px;
+            text-align: right;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-export-word {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-export-word:hover {
+            background-color: #004085;
+        }
+        .btn-export-excel {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-export-excel:hover {
+            background-color: #218838;
+        }
+        .status-badge {
+            font-weight: bold;
+            font-size: 11px;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .status-yes { color: #28a745; }
+        .status-no { color: #dc3545; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>PHIẾU KHẢO SÁT TRANG THIẾT BỊ CÔNG NGHỆ</h1>
+        <p>Vui lòng điền đầy đủ và chính xác thông tin thiết bị của đơn vị/phòng ban</p>
+    </div>
+
     <form id="surveyForm">
-        <div class="row g-2">
-            <div class="col-md-4"><input type="text" id="dept" placeholder="Bộ phận" class="form-control" required></div>
-            <div class="col-md-4"><input type="text" id="user" placeholder="Người sử dụng" class="form-control" required></div>
-            <div class="col-md-4"><input type="number" id="qty" placeholder="Số lượng" class="form-control" value="1" required></div>
-            <div class="col-12"><input type="text" id="device" placeholder="Tên thiết bị" class="form-control" required></div>
-            <div class="col-12"><textarea id="specs" placeholder="Cấu hình chi tiết" class="form-control" rows="2"></textarea></div>
-            <div class="col-md-3"><select id="os" class="form-select"><option>Windows 10</option><option>Windows 11</option></select></div>
-            <div class="col-md-3"><select id="os_license" class="form-select"><option>Có bản quyền</option><option>Chưa có</option></select></div>
-            <div class="col-md-3"><select id="office" class="form-select"><option>Office 2019</option><option>Office 365</option></select></div>
-            <div class="col-md-3"><select id="office_license" class="form-select"><option>Có bản quyền</option><option>Chưa có</option></select></div>
-            <div class="col-12"><input type="text" id="others" placeholder="Phần mềm khác (MISA, ASIA...)" class="form-control"></div>
-            <div class="col-12"><textarea id="note" placeholder="Đề xuất / Kiến nghị" class="form-control" rows="2"></textarea></div>
-            <button type="submit" class="btn btn-primary mt-3">Lưu thông tin</button>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="department">Bộ phận / Phòng ban <span style="color:red;">*</span></label>
+                    <input type="text" id="department" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="user">Người sử dụng <span style="color:red;">*</span></label>
+                    <input type="text" id="user" required>
+                </div>
+            </div>
         </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="deviceName">Tên thiết bị <span style="color:red;">*</span></label>
+                    <input type="text" id="deviceName" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="quantity">Số lượng <span style="color:red;">*</span></label>
+                    <input type="number" id="quantity" min="1" value="1" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="config">Cấu hình chi tiết <span style="color:red;">*</span></label>
+            <textarea id="config" required></textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="os">Hệ điều hành</label>
+                    <select id="os">
+                        <option value="">-- Không sử dụng / Thiết bị khác --</option>
+                        <option value="Windows 10 Pro">Windows 10 Pro</option>
+                        <option value="Windows 10 Home">Windows 10 Home</option>
+                        <option value="Windows 11 Pro">Windows 11 Pro</option>
+                        <option value="Windows 11 Home">Windows 11 Home</option>
+                        <option value="Windows 7">Windows 7 (Cũ)</option>
+                        <option value="Windows Server">Windows Server (Dành cho máy chủ)</option>
+                        <option value="macOS">macOS (Máy tính Apple)</option>
+                        <option value="Linux / Ubuntu">Linux / Ubuntu</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="form-group">
+                    <label for="osLicense">Bản quyền HĐH</label>
+                    <select id="osLicense">
+                        <option value="Chưa có bản quyền" selected>Chưa có bản quyền</option>
+                        <option value="Có bản quyền">Có bản quyền</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="office">Phần mềm Office</label>
+                    <select id="office">
+                        <option value="">-- Không cài đặt --</option>
+                        <option value="Microsoft Office 365">Microsoft Office 365 (Bản quyền theo tài khoản)</option>
+                        <option value="Microsoft Office 2021">Microsoft Office 2021</option>
+                        <option value="Microsoft Office 2019">Microsoft Office 2019</option>
+                        <option value="Microsoft Office 2016">Microsoft Office 2016</option>
+                        <option value="Microsoft Office 2013">Microsoft Office 2013</option>
+                        <option value="Microsoft Office 2010">Microsoft Office 2010 (Cũ)</option>
+                        <option value="WPS Office">WPS Office (Bản miễn phí/thay thế)</option>
+                        <option value="Office cho Mac">Office dành cho macOS</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="form-group">
+                    <label for="officeLicense">Bản quyền Office</label>
+                    <select id="officeLicense">
+                        <option value="Chưa có bản quyền" selected>Chưa có bản quyền</option>
+                        <option value="Có bản quyền">Có bản quyền</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="otherSoftware">Phần mềm khác</label>
+                    <input type="text" id="otherSoftware" list="softwareSuggestions">
+                    <datalist id="softwareSuggestions">
+                        <option value="Adobe Photoshop">
+                        <option value="Adobe Illustrator">
+                        <option value="AutoCAD">
+                        <option value="Phần mềm kế toán MISA">
+                        <option value="Phần mềm Kê khai Thuế (HTKK)">
+                        <option value="Phần mềm Bảo hiểm xã hội (IVAN)">
+                        <option value="CorelDraw">
+                        <option value="Phần mềm diệt virus Kaspersky">
+                        <option value="Phần mềm diệt virus BKAV">
+                        <option value="SolidWorks">
+                    </datalist>
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="form-group">
+                    <label for="otherLicense">Bản quyền PM khác</label>
+                    <select id="otherLicense">
+                        <option value="Chưa có bản quyền" selected>Chưa có bản quyền</option>
+                        <option value="Có bản quyền">Có bản quyền</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="proposal">Đề xuất / Kiến nghị (nếu có)</label>
+            <textarea id="proposal"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Thêm vào danh sách thống kê</button>
     </form>
 
-    <hr>
-    <button onclick="exportToExcel()" class="btn btn-success mb-3">Xuất báo cáo chuẩn Hành chính</button>
-    <table class="table table-bordered">
-        <thead class="table-dark">
-            <tr><th>Người dùng</th><th>SL</th><th>Thiết bị</th><th>HĐH</th><th>Office</th><th>Phần mềm</th><th>Thao tác</th></tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-    </table>
+    <div class="preview-section">
+        <div class="preview-title">Danh sách thiết bị đã nhập (Xem trước)</div>
+        <div style="overflow-x:auto;">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th style="width: 3%;">STT</th>
+                        <th>Người sử dụng</th>
+                        <th>Bộ phận</th>
+                        <th>Tên thiết bị</th>
+                        <th style="width: 15%;">Cấu hình</th>
+                        <th>Hệ điều hành</th>
+                        <th>Phần mềm Office</th>
+                        <th>Phần mềm khác</th>
+                        <th style="width: 3%;">SL</th>
+                        <th>Đề xuất / Kiến nghị</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="action-btns">
+            <button class="btn-export-word" onclick="exportToWord()">Xuất Báo cáo Word (.doc)</button>
+            <button class="btn-export-excel" onclick="exportToExcel()">Xuất Toàn bộ Excel (.xls)</button>
+        </div>
+    </div>
 </div>
 
 <script>
-    const supabase = supabase.createClient('https://ckoersckkzygzuifplwj.supabase.co', 'sb_publishable_cfzmHqhoCkWwD2KZBEHZvw_xr5vVDbi');
+    const dataList = [];
+    const form = document.getElementById('surveyForm');
+    const tableBody = document.querySelector('#dataTable tbody');
 
-    async function loadData() {
-        const { data, error } = await supabase.from('survey_devices').select('*');
-        if (error) { console.error("Lỗi tải dữ liệu:", error); return; }
-        
-        let html = "";
-        data.forEach(row => {
-            html += `<tr>
-                <td>${row.full_name || ''}</td>
-                <td>${row.quantity || 1}</td>
-                <td>${row.device_name || ''}</td>
-                <td>${row.os || ''}</td>
-                <td>${row.office_version || ''}</td>
-                <td>${row.other_software || ''}</td>
-                <td><button class="btn btn-danger btn-sm" onclick="deleteRow(${row.id})">Xóa</button></td>
-            </tr>`;
-        });
-        document.getElementById('tableBody').innerHTML = html;
-    }
-
-    document.getElementById('surveyForm').onsubmit = async (e) => {
+    form.addEventListener('submit', function(e) {
         e.preventDefault();
-        const data = {
-            department: document.getElementById('dept').value,
-            full_name: document.getElementById('user').value,
-            quantity: parseInt(document.getElementById('qty').value),
-            device_name: document.getElementById('device').value,
-            specs: document.getElementById('specs').value,
-            os: document.getElementById('os').value + " (" + document.getElementById('os_license').value + ")",
-            office_version: document.getElementById('office').value + " (" + document.getElementById('office_license').value + ")",
-            other_software: document.getElementById('others').value,
-            suggestions: document.getElementById('note').value
-        };
-        const { error } = await supabase.from('survey_devices').insert([data]);
-        if(error) alert("Lỗi: " + error.message);
-        else { alert("Đã lưu thành công!"); loadData(); }
-    };
-
-    async function deleteRow(id) {
-        await supabase.from('survey_devices').delete().eq('id', id);
-        loadData();
-    }
-
-    async function exportToExcel() {
-        const { data } = await supabase.from('survey_devices').select('*');
-        if(!data || data.length === 0) return alert("Chưa có dữ liệu!");
         
-        // Tạo file với header chuẩn
-        const ws = XLSX.utils.json_to_sheet(data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "BaoCao");
-        XLSX.writeFile(wb, "Bao_Cao_Tong_Hop.xlsx");
+        const record = {
+            stt: dataList.length + 1,
+            user: document.getElementById('user').value,
+            dept: document.getElementById('department').value,
+            device: document.getElementById('deviceName').value,
+            config: document.getElementById('config').value,
+            os: document.getElementById('os').value || '-',
+            osLicense: document.getElementById('os').value ? document.getElementById('osLicense').value : '-',
+            office: document.getElementById('office').value || '-',
+            officeLicense: document.getElementById('office').value ? document.getElementById('officeLicense').value : '-',
+            other: document.getElementById('otherSoftware').value || '-',
+            otherLicense: document.getElementById('otherSoftware').value ? document.getElementById('otherLicense').value : '-',
+            qty: document.getElementById('quantity').value,
+            proposal: document.getElementById('proposal').value || 'Không có'
+        };
+
+        dataList.push(record);
+        renderTable();
+        
+        const currentDept = document.getElementById('department').value;
+        form.reset();
+        document.getElementById('department').value = currentDept;
+        document.getElementById('quantity').value = 1;
+        document.getElementById('os').value = "";
+        document.getElementById('office').value = "";
+        document.getElementById('osLicense').value = "Chưa có bản quyền";
+        document.getElementById('officeLicense').value = "Chưa có bản quyền";
+        document.getElementById('otherLicense').value = "Chưa có bản quyền";
+    });
+
+    function renderTable() {
+        tableBody.innerHTML = '';
+        dataList.forEach((item, index) => {
+            item.stt = index + 1;
+            
+            const osBadge = item.os !== '-' ? `<br><span class="status-badge ${item.osLicense === 'Có bản quyền' ? 'status-yes' : 'status-no'}">(${item.osLicense})</span>` : '';
+            const officeBadge = item.office !== '-' ? `<br><span class="status-badge ${item.officeLicense === 'Có bản quyền' ? 'status-yes' : 'status-no'}">(${item.officeLicense})</span>` : '';
+            const otherBadge = item.other !== '-' ? `<br><span class="status-badge ${item.otherLicense === 'Có bản quyền' ? 'status-yes' : 'status-no'}">(${item.otherLicense})</span>` : '';
+
+            const row = `<tr>
+                <td>${item.stt}</td>
+                <td><b>${item.user}</b></td>
+                <td>${item.dept}</td>
+                <td>${item.device}</td>
+                <td>${item.config}</td>
+                <td>${item.os} ${osBadge}</td>
+                <td>${item.office} ${officeBadge}</td>
+                <td>${item.other} ${otherBadge}</td>
+                <td>${item.qty}</td>
+                <td>${item.proposal}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
     }
 
-    loadData();
+    // --- HÀM 1: XUẤT VĂN BẢN HÀNH CHÍNH CHUẨN ĐỊNH DẠNG WORD (.DOC) ---
+    function exportToWord() {
+        if(dataList.length === 0) {
+            alert('Vui lòng nhập ít nhất một bản ghi dữ liệu trước khi xuất báo cáo!');
+            return;
+        }
+
+        let tableRowsHtml = '';
+        dataList.forEach(item => {
+            const osText = item.os !== '-' ? `${item.os} <br><span style="font-size:9pt; color:${item.osLicense === 'Có bản quyền' ? '#000000' : '#ff0000'};">(${item.osLicense})</span>` : '-';
+            const officeText = item.office !== '-' ? `${item.office} <br><span style="font-size:9pt; color:${item.officeLicense === 'Có bản quyền' ? '#000000' : '#ff0000'};">(${item.officeLicense})</span>` : '-';
+            const otherText = item.other !== '-' ? `${item.other} <br><span style="font-size:9pt; color:${item.otherLicense === 'Có bản quyền' ? '#000000' : '#ff0000'};">(${item.otherLicense})</span>` : '-';
+
+            // Chuyển đổi dấu xuống dòng trong textarea cấu hình thành thẻ <br> để Word hiển thị đúng
+            const formattedConfig = item.config.replace(/\n/g, '<br>');
+
+            tableRowsHtml += `
+                <tr style="page-break-inside: avoid;">
+                    <td style="border: 1px solid #000000; padding: 6px; text-align: center; vertical-align: top;">${item.stt}</td>
+                    <td style="border: 1px solid #000000; padding: 6px; vertical-align: top;">${item.user}</td>
+                    <td style="border: 1px solid #000000; padding: 6px; vertical-align: top;">${item.dept}</td>
+                    <td style="border: 1px solid #000000; padding: 6px; vertical-align: top;">${item.device}</td>
+                    <td style="border: 1px solid #000000; padding: 6px; font-size: 11pt; vertical-align: top;">${formattedConfig}</td>
+                    <td style="border: 1px solid #000000; padding: 6px; text-align: center; font-size: 11pt; vertical-align: top;">${osText}</td>
+                    <td style="border: 1px solid #000000; padding: 6px; text-align: center; font-size: 11pt; vertical-align: top;">${officeText}</td>
+                    <td style="border: 1px solid #000000; padding: 6px; text-align: center; font-size: 11pt; vertical-align: top;">${otherText}</td>
+                    <td style="border: 1px solid #000000; padding: 6px; text-align: center; vertical-align: top;">${item.qty}</td>
+                    <td style="border: 1px solid #000000; padding: 6px; vertical-align: top;">${item.proposal}</td>
+                </tr>
+            `;
+        });
+
+        const wordHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>Báo cáo hành chính thống kê trang thiết bị</title>
+    <style>
+        @page { size: A4 landscape; margin: 20mm 15mm 20mm 20mm; }
+        body { font-family: "Times New Roman", Times, serif; font-size: 13pt; line-height: 1.4; color: #000; }
+        .co-quan { text-align: center; font-weight: bold; font-size: 12pt; text-transform: uppercase; }
+        .tieu-ngu { text-align: center; font-weight: bold; font-size: 12pt; }
+        .tieu-ngu .gach-chan { width: 160px; height: 1px; background: #000; margin: 4px auto; }
+        .co-quan .gach-chan { width: 80px; height: 1px; background: #000; margin: 4px auto; }
+        .title-section { text-align: center; margin-top: 20px; margin-bottom: 25px; }
+        .title-section h2 { font-size: 15pt; font-weight: bold; margin: 0 0 5px 0; text-transform: uppercase; }
+        .title-section p { font-style: italic; margin: 0; font-size: 12pt; }
+        .signature-table { width: 100%; border: none; margin-top: 40px; }
+        .signature-table td { border: none; text-align: center; width: 50%; font-size: 12pt; vertical-align: top;}
+    </style>
+</head>
+<body>
+    <table style="width:100%; border:none; margin-bottom: 20px;">
+        <tr>
+            <td class="co-quan" style="width:40%; vertical-align:top; border:none; text-align:center;">
+                TÊN ĐƠN VỊ / CÔNG TY<br>
+                <span style="font-weight:normal; text-transform: none;">Số: ......./BC-TH</span>
+                <div class="gach-chan"></div>
+            </td>
+            <td class="tieu-ngu" style="width:60%; vertical-align:top; border:none; text-align:center;">
+                CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br>
+                <span style="font-size:13pt;">Độc lập - Tự do - Hạnh phúc</span>
+                <div class="gach-chan"></div>
+                <p style="font-weight:normal; font-style:italic; font-size:12pt; margin-top:10px;">............, ngày .... tháng .... năm 2026</p>
+            </td>
+        </tr>
+    </table>
+    <div class="title-section">
+        <h2>BÁO CÁO</h2>
+        <h2 style="font-size:14pt;">Tổng hợp tình hình trang thiết bị công nghệ thông tin</h2>
+        <p>(Kèm theo Công văn số: ....../.........)</p>
+    </div>
+    <p style="text-align: justify; text-indent: 1.27cm; margin-bottom: 15px;">Thực hiện kế hoạch rà soát và kiểm kê tài sản công nghệ thông tin định kỳ nhằm đảm bảo hạ tầng kỹ thuật vận hành ổn định, đơn vị xin báo cáo tổng hợp dữ liệu khảo sát trang thiết bị công nghệ chi tiết như sau:</p>
+    <table style="width: 100%; border-collapse: collapse; font-size: 11pt; margin-top: 15px;">
+        <thead>
+            <tr style="background-color: #f2f2f2;">
+                <th style="border: 1px solid #000000; padding: 6px; text-align: center; width: 4%;">STT</th>
+                <th style="border: 1px solid #000000; padding: 6px; text-align: center;">Người sử dụng</th>
+                <th style="border: 1px solid #000000; padding: 6px; text-align: center;">Bộ phận</th>
+                <th style="border: 1px solid #000000; padding: 6px; text-align: center;">Tên thiết bị</th>
+                <th style="border: 1px solid #000000; padding: 6px; text-align: center; width: 18%;">Cấu hình</th>
+                <th style="border: 1px solid #000000; padding: 6px; text-align: center;">Hệ điều hành</th>
+                <th style="border: 1px solid #000000; padding: 6px; text-align: center;">Phần mềm Office</th>
+                <th style="border: 1px solid #000000; padding: 6px; text-align: center;">Phần mềm khác</th>
+                <th style="border: 1px solid #000000; padding: 6px; text-align: center; width: 4%;">SL</th>
+                <th style="border: 1px solid #000000; padding: 6px; text-align: center;">Đề xuất / Kiến nghị</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${tableRowsHtml}
+        </tbody>
+    </table>
+    <p style="text-align: justify; text-indent: 1.27cm; margin-top: 20px;">Kính trình lãnh đạo xem xét và phê duyệt phương án điều chỉnh, nâng cấp đối với các thiết bị có kiến nghị từ bộ phận sử dụng để đảm bảo hiệu suất công việc chung.</p>
+    <table class="signature-table">
+        <tr>
+            <td>
+                <b style="display:block; text-align:left; margin-left:30px;">Nơi nhận:</b><br>
+                <span style="font-size:11pt; font-style:italic; display:block; text-align:left; margin-left:30px; line-height: 1.3;">
+                    - Như trên;<br>
+                    - Ban Giám đốc (để b/c);<br>
+                    - Lưu: VT.
+                </span>
+            </td>
+            <td>
+                <b>NGƯỜI LẬP BÁO CÁO</b><br>
+                <span style="font-style:italic; font-size:11pt; color:#555;">(Ký, ghi rõ họ tên)</span>
+                <br><br><br><br><br>
+                <span>..........................................</span>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
+
+        const blob = new Blob([wordHtml], { type: 'application/msword;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Bao_Cao_Hanh_Chinh_Thiet_Bi.doc';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    // --- HÀM 2: XUẤT TOÀN BỘ BẢNG DỮ LIỆU SANG FILE EXCEL (.XLS) ---
+    function exportToExcel() {
+        if(dataList.length === 0) {
+            alert('Vui lòng nhập ít nhất một bản ghi dữ liệu trước khi xuất báo cáo!');
+            return;
+        }
+
+        let excelRowsHtml = '';
+        dataList.forEach(item => {
+            const osFull = item.os !== '-' ? `${item.os} (${item.osLicense})` : '-';
+            const officeFull = item.office !== '-' ? `${item.office} (${item.officeLicense})` : '-';
+            const otherFull = item.other !== '-' ? `${item.other} (${item.otherLicense})` : '-';
+            
+            // Xử lý xuống dòng trong Excel (thay \n thành &#10; để thuộc tính wraptext hoạt động tốt)
+            const cleanConfig = item.config.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '&#10;');
+
+            excelRowsHtml += `
+                <tr>
+                    <td style="border:0.5pt solid #000000; text-align:center; vertical-align:top;">${item.stt}</td>
+                    <td style="border:0.5pt solid #000000; vertical-align:top;">${item.user}</td>
+                    <td style="border:0.5pt solid #000000; vertical-align:top;">${item.dept}</td>
+                    <td style="border:0.5pt solid #000000; vertical-align:top;">${item.device}</td>
+                    <td style="border:0.5pt solid #000000; white-space:pre-wrap; vertical-align:top;">${cleanConfig}</td>
+                    <td style="border:0.5pt solid #000000; vertical-align:top;">${osFull}</td>
+                    <td style="border:0.5pt solid #000000; vertical-align:top;">${officeFull}</td>
+                    <td style="border:0.5pt solid #000000; vertical-align:top;">${otherFull}</td>
+                    <td style="border:0.5pt solid #000000; text-align:center; vertical-align:top;">${item.qty}</td>
+                    <td style="border:0.5pt solid #000000; vertical-align:top;">${item.proposal}</td>
+                </tr>
+            `;
+        });
+
+        const excelHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: "Times New Roman", Times, serif; }
+        td { mso-number-format:"\@"; } /* Ép kiểu chuỗi chống mất số 0 đầu */
+        th { font-weight: bold; background-color: #f2f2f2; text-align: center; }
+    </style>
+</head>
+<body>
+    <table border="1" style="border-collapse:collapse; font-size:11pt;">
+        <thead>
+            <tr>
+                <th colspan="10" style="font-size:16pt; font-weight:bold; text-align:center; height:40px; border:none;">BẢNG TỔNG HỢP KHẢO SÁT TRANG THIẾT BỊ CÔNG NGHỆ THÔNG TIN</th>
+            </tr>
+            <tr>
+                <th colspan="10" style="font-size:11pt; font-style:italic; text-align:center; border:none; height:20px;">Thời gian xuất báo cáo: Năm 2026</th>
+            </tr>
+            <tr><th colspan="10" style="border:none; height:15px;"></th></tr>
+            <tr style="background-color:#e6e6e6; height:25px;">
+                <th style="border:0.5pt solid #000000; width:50px;">STT</th>
+                <th style="border:0.5pt solid #000000; width:150px;">Người sử dụng</th>
+                <th style="border:0.5pt solid #000000; width:130px;">Bộ phận</th>
+                <th style="border:0.5pt solid #000000; width:140px;">Tên thiết bị</th>
+                <th style="border:0.5pt solid #000000; width:280px;">Cấu hình chi tiết</th>
+                <th style="border:0.5pt solid #000000; width:160px;">Hệ điều hành</th>
+                <th style="border:0.5pt solid #000000; width:180px;">Phần mềm Office</th>
+                <th style="border:0.5pt solid #000000; width:180px;">Phần mềm khác</th>
+                <th style="border:0.5pt solid #000000; width:60px;">SL</th>
+                <th style="border:0.5pt solid #000000; width:200px;">Đề xuất / Kiến nghị</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${excelRowsHtml}
+        </tbody>
+    </table>
+</body>
+</html>`;
+
+        const blob = new Blob([excelHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Danh_Sach_Thiet_Bi_May_Tinh.xls';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
 </script>
 </body>
 </html>
